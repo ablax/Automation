@@ -17,8 +17,8 @@ public class TextBoxPageTests {
                 .navigateToElementPage()
                 .isPageExpanded()
                 .navigateToTextBoxPage()
+                .isOnTextBoxPage()
                 .fillForm(username, "murad.m.m@abv.bg", "Nope", "Nope Nope")
-                .getSubmittedName()
         ).isEqualTo("Name:" + username);
     }
 

@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import static org.junit.Assert.fail;
+
 public class TextBoxPage extends HomePage<TextBoxPage> {
 
     private final WebDriver webDriver;
@@ -60,12 +62,22 @@ public class TextBoxPage extends HomePage<TextBoxPage> {
         return webDriver.findElement(By.id("name")).getText();
     }
 
-    public TextBoxPage fillForm(final String username, final String email, final String currentAddress, final String permanentAddress) {
+    public TextBoxPage isOnTextBoxPage() {
+        try {
+            webDriver.findElement(By.xpath("//div[@class=\"main-header\" and contains(text(), \"Text Box\")]"));
+        } catch (Exception ex) {
+            fail("Not on page");
+        }
+        return this;
+    }
+
+    public String fillForm(final String username, final String email, final String currentAddress, final String permanentAddress) {
         return this
                 .setUsername(username)
                 .setEmail(email)
                 .setCurrentAddress(currentAddress)
                 .setPermanentAddress(permanentAddress)
-                .submit();
+                .submit()
+                .getSubmittedName();
     }
 }
