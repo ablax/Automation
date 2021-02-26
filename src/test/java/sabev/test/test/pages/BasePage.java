@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 public abstract class BasePage<T> {
 
     public final static String BASE_URL = "https://demoqa.com/";
-    private WebDriver webDriver;
+    private final WebDriver webDriver;
 
     public BasePage(final WebDriver webDriver) {
         this.webDriver = webDriver;

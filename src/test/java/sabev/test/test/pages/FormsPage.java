@@ -5,7 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class FormsPage extends HomePage<FormsPage> {
 
-    private WebDriver webDriver;
+    private final WebDriver webDriver;
 
     public FormsPage(final WebDriver webDriver) {
         super(webDriver);

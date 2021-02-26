@@ -5,7 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class AlertsPage extends HomePage<AlertsPage> {
 
-    private WebDriver webDriver;
+    private final WebDriver webDriver;
 
     public AlertsPage(final WebDriver webDriver) {
         super(webDriver);

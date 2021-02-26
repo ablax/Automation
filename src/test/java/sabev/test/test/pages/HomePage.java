@@ -7,7 +7,7 @@ import static org.junit.Assert.fail;
 
 public class HomePage<T> extends BasePage<HomePage> {
 
-    private WebDriver webDriver;
+    private final WebDriver webDriver;
 
     public HomePage(final WebDriver webDriver) {
         super(webDriver);

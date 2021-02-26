@@ -11,7 +11,7 @@ import sabev.test.test.pages.HomePage;
 public class ElementsPageTests {
 
     @Test
-    public void elementsFormOpenTest(final ChromeDriver chromeDriver) throws InterruptedException {
+    public void elementsFormOpenTest(final ChromeDriver chromeDriver) {
         new HomePage(chromeDriver)
                 .navigateToElementPage().isPageExpanded()
                 .navigateToAlertsPage().isPageExpanded()
