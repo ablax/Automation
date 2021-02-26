@@ -13,4 +13,9 @@ public class ElementsPage extends HomePage<ElementsPage> {
         this.webDriver = webDriver;
     }
 
+    public TextBoxPage navigateToTextBoxPage() {
+        webDriver.navigate().to(BASE_URL + "text-box/");
+        return new TextBoxPage(webDriver);
+    }
+
 }
