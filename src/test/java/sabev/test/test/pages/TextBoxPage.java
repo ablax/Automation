@@ -9,8 +9,11 @@ public class TextBoxPage extends ElementsPage {
 
     private final WebDriver webDriver;
 
-    @FindBy(id = "username")
+    @FindBy(id = "userName")
     private WebElement usernameField;
+
+    @FindBy(id = "userEmail")
+    private WebElement emailField;
 
     public TextBoxPage(final WebDriver webDriver) {
         super(webDriver);
