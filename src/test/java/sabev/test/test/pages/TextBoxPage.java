@@ -1,5 +1,6 @@
 package sabev.test.test.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,7 +27,7 @@ public class TextBoxPage extends HomePage<TextBoxPage> {
 
     public TextBoxPage(final WebDriver webDriver) {
         super(webDriver);
-        PageFactory.initElements(webDriver,this);
+        PageFactory.initElements(webDriver, this);
         this.webDriver = webDriver;
     }
 
@@ -46,12 +47,25 @@ public class TextBoxPage extends HomePage<TextBoxPage> {
     }
 
     public TextBoxPage setPermanentAddress(final String permanentAddress) {
-        this.permanentAddressField .sendKeys(permanentAddress);
+        this.permanentAddressField.sendKeys(permanentAddress);
         return this;
     }
 
-    public TextBoxPage submit(){
+    public TextBoxPage submit() {
         this.submitBtn.click();
         return this;
+    }
+
+    public String getSubmittedName() {
+        return webDriver.findElement(By.id("name")).getText();
+    }
+
+    public TextBoxPage fillForm(final String username, final String email, final String currentAddress, final String permanentAddress) {
+        return this
+                .setUsername(username)
+                .setEmail(email)
+                .setCurrentAddress(currentAddress)
+                .setPermanentAddress(permanentAddress)
+                .submit();
     }
 }

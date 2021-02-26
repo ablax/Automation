@@ -4,19 +4,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 import sabev.test.test.pages.HomePage;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+
 @ExtendWith(SeleniumExtension.class)
 public class TextBoxPageTests {
 
     @Test
     public void testSubmittingForm(final ChromeDriver chromeDriver) {
-        new HomePage(chromeDriver).navigateToElementPage()
+        final String username = "Ablax";
+        assertThat(new HomePage(chromeDriver)
+                .navigateToElementPage()
                 .isPageExpanded()
                 .navigateToTextBoxPage()
-                .setUsername("Ablax")
-                .setEmail("murad.m.m@abv.bg")
-                .setCurrentAddress("Nope")
-                .setPermanentAddress("Nope Nope")
-                .submit();
+                .fillForm(username, "murad.m.m@abv.bg", "Nope", "Nope Nope")
+                .getSubmittedName()
+        ).isEqualTo("Name:" + username);
     }
 
 
