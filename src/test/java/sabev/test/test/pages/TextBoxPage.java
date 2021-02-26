@@ -49,4 +49,9 @@ public class TextBoxPage extends HomePage<TextBoxPage> {
         this.permanentAddressField .sendKeys(permanentAddress);
         return this;
     }
+
+    public TextBoxPage submit(){
+        this.submitBtn.click();
+        return this;
+    }
 }

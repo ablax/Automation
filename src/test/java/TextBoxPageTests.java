@@ -15,7 +15,8 @@ public class TextBoxPageTests {
                 .setUsername("Ablax")
                 .setEmail("murad.m.m@abv.bg")
                 .setCurrentAddress("Nope")
-                .setPermanentAddress("Nope Nope");
+                .setPermanentAddress("Nope Nope")
+                .submit();
     }
 
 
