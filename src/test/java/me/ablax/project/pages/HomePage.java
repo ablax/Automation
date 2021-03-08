@@ -3,6 +3,8 @@ package me.ablax.project.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import static org.junit.Assert.fail;
+
 
 public class HomePage extends BasePage {
 
@@ -18,6 +20,14 @@ public class HomePage extends BasePage {
         return new ConvertorsPage(webDriver);
     }
 
+    public HomePage isOnHomePage() {
+        try {
+            webDriver.findElement(By.xpath("//p/*[contains(text(), 'КАЛКУЛАТОР')]"));
+        } catch (Exception ex) {
+            fail("Not on page");
+        }
+        return this;
+    }
 
 
 }

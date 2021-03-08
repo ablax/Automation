@@ -1,13 +1,12 @@
 package me.ablax.project.pages;
 
+import me.ablax.project.utils.DoubleUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
-import javax.swing.*;
 
 import static org.junit.Assert.fail;
 
@@ -24,11 +23,14 @@ public class LengthConvertorPage extends BasePage {
     @FindBy(xpath = "//select[@id='kam' and @name='kam']")
     private WebElement toField;
 
-    @FindBy(id = "permanentAddress")
-    private WebElement permanentAddressField;
-
-    @FindBy(id = "submit")
+    @FindBy(xpath = "//input[@class = 'presmetni_b']")
     private WebElement submitBtn;
+
+    @FindBy(xpath = "//input[@class = 'izchisti_b']")
+    private WebElement clearBtn;
+
+    private String fromType;
+    private String toType;
 
     public LengthConvertorPage(final WebDriver webDriver) {
         super(webDriver);
@@ -45,64 +47,99 @@ public class LengthConvertorPage extends BasePage {
         return this;
     }
 
-    public LengthConvertorPage setFromMilesToKilometers(){
-       return this.setFrom("миля").setTo("Километър");
+    public LengthConvertorPage setFromMilesToKilometers() {
+        this.fromType = "Мили";
+        this.toType = "km";
+        return this.setFrom("миля").setTo("Километър");
     }
 
-    public LengthConvertorPage setFromKilometersToMiles(){
-       return this.setFrom("Километър").setTo("миля");
+    public LengthConvertorPage setFromKilometersToMiles() {
+        this.fromType = "km";
+        this.toType = "Мили";
+        return this.setFrom("Километър").setTo("миля");
     }
 
-    public LengthConvertorPage setFrom(final String from){
+    private LengthConvertorPage setFrom(final String fromType) {
         fromField.click();
-        fromField.sendKeys(from);
+        fromField.sendKeys(fromType);
         fromField.sendKeys(Keys.ENTER);
         return this;
     }
 
-    public LengthConvertorPage setTo(final String to){
+    private LengthConvertorPage setTo(final String toType) {
         toField.click();
-        toField.sendKeys(to);
+        toField.sendKeys(toType);
         toField.sendKeys(Keys.ENTER);
         return this;
     }
-//
-//    public TextBoxPage setUsername(final String username) {
-//        this.usernameField.sendKeys(username);
-//        return this;
-//    }
-//
-//    public TextBoxPage setEmail(final String email) {
-//        this.fromField.sendKeys(email);
-//        return this;
-//    }
-//
-//    public TextBoxPage setCurrentAddress(final String currentAddress) {
-//        this.toField.sendKeys(currentAddress);
-//        return this;
-//    }
-//
-//    public TextBoxPage setPermanentAddress(final String permanentAddress) {
-//        this.permanentAddressField.sendKeys(permanentAddress);
-//        return this;
-//    }
-//
-//    public TextBoxPage submit() {
-//        this.submitBtn.click();
-//        return this;
-//    }
-//
-//    public String getSubmittedName() {
-//        return webDriver.findElement(By.id("name")).getText();
-//    }
-//
-//    public String fillForm(final String username, final String email, final String currentAddress, final String permanentAddress) {
-//        return this
-//                .setUsername(username)
-//                .setEmail(email)
-//                .setCurrentAddress(currentAddress)
-//                .setPermanentAddress(permanentAddress)
-//                .submit()
-//                .getSubmittedName();
-//    }
+
+    public LengthConvertorPage setValue(final Double value) {
+        valueField.click();
+        valueField.sendKeys(Keys.chord(Keys.LEFT_CONTROL, Keys.BACK_SPACE));
+        valueField.sendKeys(DoubleUtils.toString(value));
+        return this;
+    }
+
+
+    public String getValue() {
+        return valueField.getAttribute("value");
+    }
+
+    public LengthConvertorPage setValue(final String value) {
+        valueField.click();
+        valueField.sendKeys(Keys.chord(Keys.LEFT_CONTROL, Keys.BACK_SPACE));
+        valueField.sendKeys(value);
+        return this;
+    }
+
+    public LengthConvertorPage pressCalculateButton() {
+        submitBtn.click();
+        return this;
+    }
+
+    public LengthConvertorPage pressClearButton() {
+        clearBtn.click();
+        return this;
+    }
+
+    public LengthConvertorPage isCalculationCorrect(final Double fromValue, Double toValue) {
+        toValue = DoubleUtils.floorDown(toValue);
+        try {
+            final String xpath = "//p[contains(text(), '" + DoubleUtils.toString(fromValue) + " " + fromType + " = ')]";
+            webDriver.findElement(By.xpath(xpath));
+
+            final Double calculatedValue = getCalculatedValue();
+            if (Math.abs(toValue - calculatedValue) > 0.02) {
+                fail("The calculation is not correct");
+            }
+
+        } catch (final Exception ex) {
+            fail("The calculation is not correct");
+        }
+        return this;
+    }
+
+    private Double getCalculatedValue() {
+        try {
+            final String xpath = "//p[contains(text(), '" + fromType + " = ')]";
+            final String text = webDriver.findElement(By.xpath(xpath)).getText();
+            final String calculatedValue = text.split("=")[1].split(toType)[0].trim();
+            return Double.parseDouble(calculatedValue);
+        } catch (final Exception ex) {
+            fail("The calculation is not correct");
+        }
+        fail("The calculation is not correct");
+        return -1D;
+    }
+
+    public LengthConvertorPage hasCalculated() {
+        try {
+            final String xpath = "//p[contains(text(), '" + fromType + " = ')]";
+            webDriver.findElement(By.xpath(xpath));
+        } catch (final Exception ex) {
+            fail("No calculation was made");
+        }
+        return this;
+    }
+
 }
